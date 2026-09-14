@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS 3D MODELS</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>JARVIS 3D MODELS</title>
+
+<link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2302070b' stroke='%2300eaff' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='23' fill='none' stroke='%2300bfff' stroke-width='2'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='Arial' font-size='34' font-weight='bold' fill='%23eaffff'%3EJ%3C/text%3E%3C/svg%3E"
+/>
+</head>
+<body>
+
+    <div class="jarvis-heading">
+    <span>JARVIS</span>
+</div>
+
+
+    <div id="canvas-container"></div>
+
+    <aside id="details-panel" class="hud-panel panel-details open" data-panel="details-panel">
+        <div class="panel-header">
+            <div class="panel-title"><span class="panel-icon">◈</span> PART DETAILS</div>
+            <div class="panel-actions">
+                <button class="panel-min" data-min="details-panel">−</button>
+                <button class="panel-close" data-close="details-panel">✕</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="part-hero">
+                <div class="part-thumb">
+                    <svg viewBox="0 0 100 60" class="car-thumb">
+                        <path d="M5 45 L15 30 L40 22 L70 22 L88 32 L95 42 L95 48 L5 48 Z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="22" cy="48" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                        <circle cx="76" cy="48" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                </div>
+                <div class="part-meta">
+                    <div class="meta-row"><span class="meta-k">NAME</span><span id="det-name" class="meta-v">—</span></div>
+                    <div class="meta-row"><span class="meta-k">GROUP</span><span id="det-group" class="meta-v">—</span></div>
+                    <div class="meta-row"><span class="meta-k">MESH TYPE</span><span id="det-type" class="meta-v">—</span></div>
+                    <div class="meta-row"><span class="meta-k">VERTICES</span><span id="det-verts" class="meta-v">0</span></div>
+                    <div class="meta-row"><span class="meta-k">TRIANGLES</span><span id="det-tris" class="meta-v">0</span></div>
+                </div>
+            </div>
+
+            <div class="section-title"><span class="bullet">◆</span> DIMENSIONS</div>
+            <div class="meta-row"><span class="meta-k">WIDTH (X)</span><span id="det-sx" class="meta-v">—</span></div>
+            <div class="meta-row"><span class="meta-k">HEIGHT (Y)</span><span id="det-sy" class="meta-v">—</span></div>
+            <div class="meta-row"><span class="meta-k">DEPTH (Z)</span><span id="det-sz" class="meta-v">—</span></div>
+
+            <div class="section-title"><span class="bullet">◆</span> WORLD POSITION</div>
+            <div class="meta-row"><span class="meta-k">POS X</span><span id="det-px" class="meta-v">0.00</span></div>
+            <div class="meta-row"><span class="meta-k">POS Y</span><span id="det-py" class="meta-v">0.00</span></div>
+            <div class="meta-row"><span class="meta-k">POS Z</span><span id="det-pz" class="meta-v">0.00</span></div>
+
+            <div class="section-title"><span class="bullet">◆</span> MATERIAL</div>
+            <div class="meta-row"><span class="meta-k">TYPE</span><span id="det-mat-type" class="meta-v">—</span></div>
+            <div class="meta-row"><span class="meta-k">COLOR</span><span id="det-mat-color" class="meta-v">—</span></div>
+            <div class="meta-row"><span class="meta-k">METALNESS</span><span id="det-metal" class="meta-v">—</span></div>
+            <div class="meta-row"><span class="meta-k">ROUGHNESS</span><span id="det-rough" class="meta-v">—</span></div>
+            <div class="meta-row"><span class="meta-k">OPACITY</span><span id="det-opacity" class="meta-v">—</span></div>
+
+            <div class="section-title"><span class="bullet">◆</span> STATE</div>
+            <div class="meta-row"><span class="meta-k">VISIBLE</span><span id="det-vis" class="meta-v">YES</span></div>
+            <div class="meta-row"><span class="meta-k">TRASHED</span><span id="det-trashed" class="meta-v">NO</span></div>
+        </div>
+    </aside>
+
+    <aside id="design-panel" class="hud-panel panel-design open" data-panel="design-panel">
+        <div class="panel-header">
+            <div class="panel-title"><span class="panel-icon">◈</span> DESIGN</div>
+            <div class="panel-actions">
+                <button class="panel-min" data-min="design-panel">−</button>
+                <button class="panel-close" data-close="design-panel">✕</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="color-picker">
+                <div class="color-wheel">
+                    <div class="wheel-hue"></div>
+                    <div class="wheel-inner"></div>
+                    <div class="wheel-cursor"></div>
+                </div>
+                <div class="brightness-slider">
+                    <div class="brightness-track"><div class="brightness-fill"></div></div>
+                </div>
+            </div>
+
+            <div class="color-swatches">
+                <button class="swatch" data-color="ffffff" style="background:#ffffff"></button>
+                <button class="swatch" data-color="000000" style="background:#000000"></button>
+                <button class="swatch" data-color="ff3b30" style="background:#ff3b30"></button>
+                <button class="swatch" data-color="ff9500" style="background:#ff9500"></button>
+                <button class="swatch" data-color="ffcc00" style="background:#ffcc00"></button>
+                <button class="swatch" data-color="00ff88" style="background:#00ff88"></button>
+                <button class="swatch" data-color="00e5ff" style="background:#00e5ff"></button>
+                <button class="swatch" data-color="007bff" style="background:#007bff"></button>
+                <button class="swatch" data-color="a020f0" style="background:#a020f0"></button>
+                <button class="swatch" data-color="ff00aa" style="background:#ff00aa"></button>
+            </div>
+
+            <div class="slider-row">
+                <span class="slider-label">OPACITY</span>
+                <span class="slider-value" id="opacity-value">100%</span>
+            </div>
+            <input id="opacity-slider" type="range" min="0" max="100" value="100" class="range-slider" />
+
+            <div class="toggle-row">
+                <span class="toggle-label"><span class="bullet">◆</span> WIREFRAME</span>
+                <label class="toggle-switch">
+                    <input id="wireframe-toggle" type="checkbox" />
+                    <span class="toggle-knob"></span>
+                </label>
+            </div>
+        </div>
+    </aside>
+
+    <aside id="material-panel" class="hud-panel panel-material open" data-panel="material-panel">
+        <div class="panel-header">
+            <div class="panel-title"><span class="panel-icon">◈</span> MATERIAL</div>
+            <div class="panel-actions">
+                <button class="panel-min" data-min="material-panel">−</button>
+                <button class="panel-close" data-close="material-panel">✕</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="material-select">
+                <div class="mat-preview"><span class="mat-sphere"></span></div>
+                <div class="mat-name">Car Paint</div>
+                <span class="mat-caret">▾</span>
+            </div>
+
+            <div class="section-title"><span class="bullet">◆</span> PRESETS</div>
+            <div class="preset-grid">
+                <button class="preset-btn" data-preset="metal">🛠 METAL</button>
+                <button class="preset-btn" data-preset="chrome">⚙ CHROME</button>
+                <button class="preset-btn" data-preset="matte">🎨 MATTE</button>
+                <button class="preset-btn" data-preset="glass">🪟 GLASS</button>
+                <button class="preset-btn" data-preset="glow">💡 GLOW</button>
+                <button class="preset-btn" data-preset="reset">🔄 RESET</button>
+            </div>
+
+            <div class="slider-row">
+                <span class="slider-label">METALNESS</span>
+                <span class="slider-value" id="metalness-value">0.50</span>
+            </div>
+            <input id="metalness-slider" type="range" min="0" max="100" value="50" class="range-slider" />
+
+            <div class="slider-row">
+                <span class="slider-label">ROUGHNESS</span>
+                <span class="slider-value" id="roughness-value">0.50</span>
+            </div>
+            <input id="roughness-slider" type="range" min="0" max="100" value="50" class="range-slider" />
+
+            <button class="apply-btn" id="apply-material">APPLY MATERIAL</button>
+        </div>
+    </aside>
+
+    <aside id="jarvis-hud" class="hud-panel panel-inspector open" data-panel="jarvis-hud">
+        <div class="panel-header">
+            <div class="panel-title"><span class="panel-icon">▣</span> PART INSPECTOR</div>
+            <div class="panel-actions">
+                <button class="panel-min" data-min="jarvis-hud">−</button>
+                <button class="panel-close" data-close="jarvis-hud">✕</button>
+            </div>
+        </div>
+
+        <div class="inspector-stats">
+            <div class="stat"><span class="stat-label">PARTS</span><span class="stat-value" id="hud-part-count">0</span></div>
+            <div class="stat"><span class="stat-label">SPLIT</span><span class="stat-value" id="hud-split-dist">4.0</span></div>
+            <div class="stat"><span class="stat-label">STATUS</span><span class="stat-value ok" id="hud-status">READY</span></div>
+        </div>
+
+        <div class="inspector-search">
+            <span class="search-icon">🔍</span>
+            <input id="hud-search-input" type="text" placeholder="Filter parts..." />
+        </div>
+
+        <div class="inspector-tree" id="hud-tree"></div>
+
+        <div class="inspector-footer">
+            <button id="hud-btn-unsplit" class="hud-action">🧩 RESTORE</button>
+            <button id="hud-btn-hideall" class="hud-action">👁 HIDE ALL</button>
+            <button id="hud-btn-showall" class="hud-action">👁 SHOW ALL</button>
+        </div>
+    </aside>
+
+    <aside id="edit-panel" class="hud-panel panel-edit open" data-panel="edit-panel">
+        <div class="panel-header">
+            <div class="panel-title"><span class="panel-icon">◈</span> EDIT</div>
+            <div class="panel-actions">
+                <button class="panel-min" data-min="edit-panel">−</button>
+                <button class="panel-close" data-close="edit-panel">✕</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="section-title"><span class="bullet">◆</span> ROTATE</div>
+            <div class="rotate-row">
+                <div class="rotate-cell" data-edit="rot-x"><span class="rotate-icon">↻</span><span class="rotate-axis">X</span><span class="rotate-value">0.0°</span></div>
+                <div class="rotate-cell" data-edit="rot-y"><span class="rotate-icon">↻</span><span class="rotate-axis">Y</span><span class="rotate-value">0.0°</span></div>
+                <div class="rotate-cell" data-edit="rot-z"><span class="rotate-icon">↻</span><span class="rotate-axis">Z</span><span class="rotate-value">0.0°</span></div>
+            </div>
+
+            <div class="section-title"><span class="bullet">◆</span> SCALE</div>
+            <div class="scale-row"><span class="scale-axis">X</span><div class="scale-track"><div class="scale-fill" style="width:50%"></div></div><span class="scale-value">1.00</span></div>
+            <div class="scale-row"><span class="scale-axis">Y</span><div class="scale-track"><div class="scale-fill" style="width:50%"></div></div><span class="scale-value">1.00</span></div>
+            <div class="scale-row"><span class="scale-axis">Z</span><div class="scale-track"><div class="scale-fill" style="width:50%"></div></div><span class="scale-value">1.00</span></div>
+
+            <div class="section-title"><span class="bullet">◆</span> NUDGE</div>
+            <div class="nudge-grid">
+                <button class="nudge-btn" data-edit="move-x-">←</button>
+                <button class="nudge-btn" data-edit="move-x+">→</button>
+                <button class="nudge-btn" data-edit="move-y+">↑</button>
+                <button class="nudge-btn" data-edit="move-y-">↓</button>
+                <button class="nudge-btn" data-edit="move-z+">Z+</button>
+                <button class="nudge-btn" data-edit="move-z-">Z−</button>
+            </div>
+
+            <button class="apply-btn" data-edit="reset-transform">RESET TRANSFORM</button>
+        </div>
+    </aside>
+
+    <aside id="settings-panel" class="hud-panel panel-settings open" data-panel="settings-panel">
+        <div class="panel-header">
+            <div class="panel-title"><span class="panel-icon">◈</span> SETTINGS</div>
+            <div class="panel-actions">
+                <button class="panel-min" data-min="settings-panel">−</button>
+                <button class="panel-close" data-close="settings-panel">✕</button>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="section-title"><span class="bullet">◆</span> VIEW</div>
+            <div class="toggle-row">
+                <span class="toggle-label">BLUEPRINT MODE</span>
+                <label class="toggle-switch"><input type="checkbox" data-setting="blueprint" /><span class="toggle-knob"></span></label>
+            </div>
+            <div class="toggle-row">
+                <span class="toggle-label">WIREFRAME ALL PARTS</span>
+                <label class="toggle-switch"><input type="checkbox" data-setting="wireframe-all" /><span class="toggle-knob"></span></label>
+            </div>
+
+            <div class="section-title"><span class="bullet">◆</span> SCENE</div>
+            <div class="toggle-row">
+                <span class="toggle-label">AUTO-ROTATE</span>
+                <label class="toggle-switch"><input type="checkbox" data-setting="autorotate" checked /><span class="toggle-knob"></span></label>
+            </div>
+            <div class="toggle-row">
+                <span class="toggle-label">AXES HELPER</span>
+                <label class="toggle-switch"><input type="checkbox" data-setting="axes" /><span class="toggle-knob"></span></label>
+            </div>
+            <div class="toggle-row">
+                <span class="toggle-label">GRID</span>
+                <label class="toggle-switch"><input type="checkbox" data-setting="grid" /><span class="toggle-knob"></span></label>
+            </div>
+
+            <button class="apply-btn explode-btn" data-setting="explode-toggle">💥 EXPLODE / IMPLODE</button>
+        </div>
+    </aside>
+
+    <!-- 3D Particle Voice Orb -->
+    <canvas id="voice-orb-canvas"></canvas>
+
+    <button id="voice-btn">🎤 Start Voice Control</button>
+    <div id="voice-status">Mic Off</div>
+
+    <div id="trash-bin" title="Drop a part here">
+        <svg viewBox="0 0 32 32" class="trash-svg">
+            <line x1="6" y1="9" x2="26" y2="9" class="trash-line" />
+            <line x1="13" y1="6" x2="19" y2="6" class="trash-line" />
+            <path d="M9 9 L11 27 L21 27 L23 9" class="trash-outline" />
+            <line x1="14" y1="13" x2="14" y2="24" class="trash-line" />
+            <line x1="18" y1="13" x2="18" y2="24" class="trash-line" />
+        </svg>
+        <div class="trash-label">TRASH</div>
+    </div>
+
+    <div id="hand-pointer" class="hidden">
+        <div class="hand-pointer-ring"></div>
+        <div class="hand-pointer-dot"></div>
+    </div>
+
+    <div id="isolation-badge" class="hidden">
+        <span class="iso-dot"></span>
+        <span id="isolation-label">ISOLATED</span>
+        <button id="isolation-exit">✕</button>
+    </div>
+
+    <!-- Leave Confirmation Modal -->
+    <div id="leave-modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Save changes before leaving?</h3>
+            <div class="modal-actions">
+                <button onclick="saveAndLeave()">Save</button>
+                <button onclick="cancelLeave()">Cancel</button>
+                <button onclick="continueEdit()">Continue Edit</button>
+                <button onclick="leaveWithoutSave()">Discard & Leave</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Loading... <span id="progress">0%</span></p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- IMPORT MAP — MUST come BEFORE any module scripts -->
+    <!-- ============================================ -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <!-- TWEEN library (non-module, global) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+
+    <!-- ============================================ -->
+    <!-- MODULE SCRIPTS — AFTER import map            -->
+    <!-- ============================================ -->
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/voice-orb.js"></script>
+</body>
+</html>
