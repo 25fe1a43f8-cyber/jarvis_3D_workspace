@@ -674,7 +674,72 @@ function setSplitDistance(v) {
 }
 
 // ============================================
-// RESET
+// 🆕 RESET (TRANSFORM ONLY — keeps design/appearance)
+// ============================================
+function resetTransformOnly() {
+    if (typeof TWEEN !== 'undefined') TWEEN.removeAll();
+
+    // Close any open hinges
+    hingedParts.forEach((h) => { h.isOpen = false; h.currentAngle = 0; });
+
+    // Snap every mesh back to its base transform (position + rotation + scale)
+    // NOTE: does NOT touch materials, visibility (except restore), trash flags
+    allPartMeshes.forEach(mesh => {
+        const base = basePositions.get(mesh);
+        if (!base) return;
+        mesh.position.copy(base.position);
+        mesh.quaternion.copy(base.quaternion);
+        mesh.scale.set(1, 1, 1);
+        mesh.updateMatrixWorld(true);
+    });
+
+    // Clear explode bookkeeping
+    explodedParts.clear();
+
+    // Restore any isolation snapshot visibility
+    if (isolatedPart) isolatedPart = null;
+    if (visibilitySnapshot.size > 0) {
+        visibilitySnapshot.forEach((wasVisible, m) => { m.visible = wasVisible; });
+        visibilitySnapshot.clear();
+    }
+
+    // Re-hide anything the user explicitly trashed
+    allPartMeshes.forEach(m => {
+        if (m.userData.__trashed) m.visible = false;
+    });
+
+    // Hide isolation badge
+    const badge = document.getElementById('isolation-badge');
+    if (badge) badge.classList.add('hidden');
+
+    syncHudRowsToVisibility(null);
+
+    // Reset whole-car transform (position/rotation)
+    if (carModel) {
+        carModel.position.set(0, 0, 0);
+        carModel.rotation.set(0, 0, 0);
+    }
+
+    // Re-frame camera (does not modify materials)
+    if (carModel) {
+        const b = new THREE.Box3().setFromObject(carModel);
+        const s = b.getSize(new THREE.Vector3());
+        const d = Math.max(s.x, s.y, s.z) * 1.5;
+        camera.position.set(d * 0.7, d * 0.5, d * 0.7);
+        orbitControls.target.copy(carModel.position);
+        camera.lookAt(carModel.position);
+    }
+
+    orbitControls.autoRotate = true;
+    orbitControls.autoRotateSpeed = 1.5;
+
+    hideHud();
+    if (voiceStatus) voiceStatus.textContent = `🔄 Transform reset — design kept`;
+    speak('Reset complete. Design preserved.');
+}
+
+// ============================================
+// RESET (FULL — also restores materials/appearance)
 // ============================================
 function unsplitAll() {
     if (typeof TWEEN !== 'undefined') TWEEN.removeAll();
@@ -2286,10 +2351,24 @@ function handleVoiceCommand(raw) {
     // ==========================================
     // 🔄 RESET
     // ==========================================
-    if (has(cmd, ['reset all', 'reset everything', 'reset the car', 'reset car', 'reset',
-                  'bring back the car', 'bring the car back', 'restore the car', 'restore all',
-                  'revert', 'undo everything'])) {
+    // Full reset — also restores materials / appearance
+    if (has(cmd, ['reset all', 'reset everything', 'restore the car', 'restore all',
+                  'undo everything', 'full reset', 'hard reset'])) {
         unsplitAll();
+        return;
+    }
+    // Transform-only reset — KEEPS design (color, metalness, roughness, etc.)
+    if (has(cmd, ['reset car', 'reset the car', 'reset position', 'reset transform',
+                  'reset car position', 'reset shape', 'reset geometry',
+                  'bring back the car', 'bring the car back', 'revert',
+                  'put back together', 'put it back together', 'put the car back',
+                  'reassemble'])) {
+        resetTransformOnly();
+        return;
+    }
+    // Bare "reset" — safe default: keep the design
+    if (cmd === 'reset') {
+        resetTransformOnly();
         return;
     }
 
@@ -3107,6 +3186,8 @@ window.GestureAPI = {
     selectPart, focusOnPart, isolatePart, restoreAllVisibility,
     setPartVisible, togglePart, findPartByName, findPartsByGroup, isolateGroup,
     splitAll, splitGroup, splitPart, unsplitAll, changeSplitDistance, setSplitDistance,
+    resetTransformOnly,
+    resetDesign: () => unsplitAll(),
     trashSelectedPart: () => { if(selectedPart) trashPart(selectedPart); },
     restoreTrashed,
     openC, closeC,
@@ -3231,6 +3312,8 @@ function handleGestureCommand(action, args) {
         case 'toggleAutoRotate':  { api.toggleAutoRotate(); return; }
         case 'setRotateMode':     { api.setRotateMode(args ? args[0] : false); return; }
         case 'resetCarPosition':  { api.resetCarPosition(); return; }
+        case 'resetTransformOnly':{ api.resetTransformOnly(); return; }
+        case 'resetDesign':       { api.resetDesign(); return; }
         case 'toggleHeadlights':  { api.toggleHeadlights(args && args[0] !== undefined ? !!args[0] : true); return; }
         case 'toggleTaillights':  { api.toggleTaillights(args && args[0] !== undefined ? !!args[0] : true); return; }
         case 'hideAll': {
